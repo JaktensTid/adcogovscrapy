@@ -6,6 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
 from selenium.webdriver.common.by import By
+from lxml import html
 
 
 class RecordsLinksSpider(scrapy.Spider):
@@ -23,7 +24,8 @@ class RecordsLinksSpider(scrapy.Spider):
 
     def parse(self, response):
         def get_hrefs():
-            return [e.get_attribute('href') for e in self.driver.find_elements_by_xpath(".//a[@class='stdFontResults']")]
+            return [e.get_attribute('href')
+                    for e in self.driver.find_elements_by_xpath(".//a[@class='stdFontResults']")]
         self.driver.get(response.url)
 
         for date in self.dates():
@@ -48,16 +50,16 @@ class RecordsLinksSpider(scrapy.Spider):
 
             hrefs = get_hrefs()
             yield {date.strftime(self.date_formatter) + ' - 0' : list(set(hrefs))}
+            counter = 31
             for page in range(1, number_of_pages):
                 script = "__doPostBack('dgResults$ctl01$ctl%s','')" % str(page).zfill(2)
                 self.driver.execute_script(script)
+                #
                 WebDriverWait(self.driver, 1).until(
-                    EC.presence_of_element_located((By.ID, 'lblRecordCount')))
-                try:
-                    hrefs = get_hrefs()
-                except StaleElementReferenceException:
-                    pass
-                yield {date.strftime(self.date_formatter) + ' - ' + str(page + 1) : list(set(hrefs))}
+                    EC.text_to_be_present_in_element((By.ID, "lblRecordPos"), str(counter) + ' - '))
+                hrefs = get_hrefs()
+                yield {date.strftime(self.date_formatter) + ' - ' + str(page): list(set(hrefs))}
+                counter += 30
 
         self.driver.close()
 
