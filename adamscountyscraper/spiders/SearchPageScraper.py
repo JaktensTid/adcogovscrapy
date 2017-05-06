@@ -13,8 +13,8 @@ class RecordsLinksSpider(scrapy.Spider):
     name = 'linksspider'
     date_formatter = "%d/%m/%Y"
     start_date = datetime.strptime('01/01/1960', date_formatter)
-    end_date = datetime.strptime('03/01/1960', date_formatter)
-    #end_date = datetime.today().strftime(date_formatter)
+    #end_date = datetime.strptime('03/01/1960', date_formatter)
+    end_date = datetime.today().strftime(date_formatter)
 
     start_urls = [
         'https://apps.adcogov.org/oncoreweb/Search.aspx']
@@ -49,7 +49,7 @@ class RecordsLinksSpider(scrapy.Spider):
                     number_of_pages += 1
 
             hrefs = get_hrefs()
-            yield {date.strftime(self.date_formatter) + ' - 0' : list(set(hrefs))}
+            yield {date.strftime(self.date_formatter) : list(set(hrefs))}
             counter = 31
             for page in range(1, number_of_pages):
                 script = "__doPostBack('dgResults$ctl01$ctl%s','')" % str(page).zfill(2)
@@ -58,7 +58,7 @@ class RecordsLinksSpider(scrapy.Spider):
                 WebDriverWait(self.driver, 1).until(
                     EC.text_to_be_present_in_element((By.ID, "lblRecordPos"), str(counter) + ' - '))
                 hrefs = get_hrefs()
-                yield {date.strftime(self.date_formatter) + ' - ' + str(page): list(set(hrefs))}
+                yield {date.strftime(self.date_formatter) : list(set(hrefs))}
                 counter += 30
 
         self.driver.close()
