@@ -1,8 +1,17 @@
-[INFO  - 2017-05-06T16:55:29.158Z] GhostDriver - Main - running on port 51439
-[INFO  - 2017-05-06T16:55:30.099Z] Session [cfc11300-327c-11e7-9614-93ff6be051e0] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Unknown; Linux x86_64) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1","webSecurityEnabled":true}
-[INFO  - 2017-05-06T16:55:30.099Z] Session [cfc11300-327c-11e7-9614-93ff6be051e0] - page.customHeaders:  - {}
-[INFO  - 2017-05-06T16:55:30.099Z] Session [cfc11300-327c-11e7-9614-93ff6be051e0] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"2.1.1","driverName":"ghostdriver","driverVersion":"1.2.0","platform":"linux-unknown-64bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"}}
-[INFO  - 2017-05-06T16:55:30.099Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: cfc11300-327c-11e7-9614-93ff6be051e0
-[ERROR - 2017-05-06T16:58:04.525Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1494089884510
+[INFO  - 2017-05-06T20:48:29.470Z] GhostDriver - Main - running on port 35557
+[INFO  - 2017-05-06T20:48:30.416Z] Session [5cac27d0-329d-11e7-80a0-ffc2c1941f0e] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Unknown; Linux x86_64) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1","webSecurityEnabled":true}
+[INFO  - 2017-05-06T20:48:30.416Z] Session [5cac27d0-329d-11e7-80a0-ffc2c1941f0e] - page.customHeaders:  - {}
+[INFO  - 2017-05-06T20:48:30.416Z] Session [5cac27d0-329d-11e7-80a0-ffc2c1941f0e] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"2.1.1","driverName":"ghostdriver","driverVersion":"1.2.0","platform":"linux-unknown-64bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"}}
+[INFO  - 2017-05-06T20:48:30.417Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: 5cac27d0-329d-11e7-80a0-ffc2c1941f0e
+[ERROR - 2017-05-06T20:52:27.912Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1494103947895
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2017-05-06T20:52:28.701Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1494103948684
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2017-05-06T20:52:29.436Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1494103949424
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2017-05-06T20:52:30.176Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1494103950159
 
   phantomjs://platform/console++.js:263 in error
