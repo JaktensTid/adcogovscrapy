@@ -1,5 +1,6 @@
 import os
 import scrapy
+import time
 from selenium import webdriver
 from datetime import datetime, timedelta
 from selenium.webdriver.support.ui import WebDriverWait
@@ -16,6 +17,15 @@ class RecordsLinksSpider(scrapy.Spider):
     #end_date = datetime.strptime('03/01/1960', date_formatter)
     #end_date = datetime.today()
     end_date = datetime.strptime('05/04/2017', date_formatter)
+    delete_cache_js = '''
+    var cookies = document.cookie.split(";");
+
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i];
+        var eqPos = cookie.indexOf("=");
+        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }'''
 
     start_urls = [
         'https://apps.adcogov.org/oncoreweb/Search.aspx']
@@ -66,45 +76,52 @@ class RecordsLinksSpider(scrapy.Spider):
     #             WebDriverWait(self.driver, timeout=10).until(frame_available_cb("frame name"))
 
     def parse(self, response):
+        exception_message = '- - - - No Such Element Exception'
         elements_by_xpath = self.driver.find_elements_by_xpath
         element_by_xpath = self.driver.find_element_by_xpath
         by_id = self.driver.find_element_by_id
-        def get_pages():
+
+        def next_page():
+            next_pages = None
             try:
-                current_page = element_by_xpath(".//tr[@class='stdFontPager'][position()=1]/td//span").text
+                next_pages = [page
+                         for page in elements_by_xpath(
+                        ".//tr[@class='stdFontPager'][position()=1]/td//a[preceding-sibling::span]")]
             except NoSuchElementException:
-                return None
-            return [page
-                     for page in elements_by_xpath(".//tr[@class='stdFontPager'][position()=1]/td//a")
-                     if page.text == '...' or int(page.text) > int(current_page)]
+                if '400 Bad Request' in self.driver.page_source:
+                    print(exception_message)
+                    self.driver.delete_all_cookies()
+                    self.driver.refresh()
+                    return next_page()
+            if next_pages: return next_pages[0]
+            else: return next_pages
+
         def get_hrefs():
             return list(set([e.get_attribute('href')
                     for e in elements_by_xpath(".//a[@class='stdFontResults']")]))
 
-        self.driver.get(response.url)
-
-        for date in self.dates():
-            try:
-                search_selector = element_by_xpath(".//table[@id='Table2']/tbody/tr[position() = last() - 1]//a")
-                search_selector.click()
-            except NoSuchElementException:
-                pass
+        def next_date():
+            self.driver.delete_all_cookies()
+            search_selector = element_by_xpath(".//table[@id='Table2']/tbody/tr[position() = last() - 1]//a")
+            search_selector.click()
             submit = by_id('cmdSubmit')
             date_input = by_id('txtRecordDate')
             date_input.clear()
             date_input.send_keys(date.strftime(self.date_formatter))
             submit.click()
 
-            yield {date.strftime(self.date_formatter): get_hrefs(), 'page' : 1}
+        self.driver.get(response.url)
 
-            pages = get_pages()
-            while pages:
-                a = pages[0]
-                page = a.text
-                a.click()
+        for date in self.dates():
+            next_date()
+            yield {date.strftime(self.date_formatter): get_hrefs(), 'page' : 1}
+            next = next_page()
+            while next:
+                page = next.text
+                next.click()
                 hrefs = get_hrefs()
                 yield {date.strftime(self.date_formatter): hrefs, 'page' : page }
-                pages = get_pages()
+                next = next_page()
 
         self.driver.close()
 

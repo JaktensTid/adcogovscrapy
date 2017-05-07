@@ -24,7 +24,7 @@ class MongodbPipeLine(object):
         return item
 
     def list_processor(self, item, spider):
-        date = [key for key in item][0]
+        date = [key for key in item if key != 'page'][0]
         objects = [{'link' : link, 'date' : date, 'page' : item['page']} for link in item[date]]
         print(' - - - - Got items' + date)
         if objects:
