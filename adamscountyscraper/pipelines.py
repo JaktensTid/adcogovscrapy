@@ -1,6 +1,5 @@
 from pymongo import MongoClient
 from scrapy.conf import settings
-from scrapy.exceptions import DropItem
 from scrapy import log
 
 
@@ -11,18 +10,14 @@ class MongodbPipeLine(object):
         self.collection = db[settings['MONGODB_COLLECTION']]
 
     def process_item(self, item, spider):
-
         if 'instrument' in item:
             self.object_processor(item, spider)
         else:
             self.list_processor(item, spider)
 
     def object_processor(self, item, spider):
-        count = self.collection.find().count()
-        if count == 14080:
-            pass
         if item:
-            self.collection.update_one({'href' : item['href']}, item)
+            self.collection.update_one({'link' : item['link']}, {'data' : item})
             log.msg('Record added to database', level=log.DEBUG, spider=spider)
         return item
 
