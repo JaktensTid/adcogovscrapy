@@ -24,9 +24,9 @@ class MongodbPipeLine(object):
         return item
 
     def list_processor(self, item, spider):
-        key = [key for key in item][0]
-        objects = [{'link' : link, 'date' : key} for link in item[key]]
-        print(' - - - - Got items' + key)
+        date = [key for key in item][0]
+        objects = [{'link' : link, 'date' : date, 'page' : item['page']} for link in item[date]]
+        print(' - - - - Got items' + date)
         if objects:
             self.collection.insert_many(objects)
             log.msg('Record added to database', level=log.DEBUG, spider=spider)
