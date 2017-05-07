@@ -18,6 +18,9 @@ class MongodbPipeLine(object):
             self.list_processor(item, spider)
 
     def object_processor(self, item, spider):
+        count = self.collection.find().count()
+        if count == 14080:
+            pass
         if item:
             self.collection.update_one({'href' : item['href']}, item)
             log.msg('Record added to database', level=log.DEBUG, spider=spider)

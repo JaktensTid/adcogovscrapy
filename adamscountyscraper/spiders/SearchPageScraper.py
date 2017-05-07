@@ -13,25 +13,18 @@ from lxml import html
 class RecordsLinksSpider(scrapy.Spider):
     name = 'linksspider'
     date_formatter = "%m/%d/%Y"
-    start_date = datetime.strptime('05/05/2017', date_formatter)
+    start_date = datetime.strptime('01/01/1860', date_formatter)
     #end_date = datetime.strptime('03/01/1960', date_formatter)
     #end_date = datetime.today()
-    end_date = datetime.strptime('05/04/2017', date_formatter)
-    delete_cache_js = '''
-    var cookies = document.cookie.split(";");
-
-    for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i];
-        var eqPos = cookie.indexOf("=");
-        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    }'''
+    end_date = datetime.strptime('02/07/2017', date_formatter)
 
     start_urls = [
         'https://apps.adcogov.org/oncoreweb/Search.aspx']
 
     def __init__(self):
         self.driver = webdriver.PhantomJS(os.path.join(os.path.dirname(__file__), 'bin/phantomjs'))
+        self.driver.set_page_load_timeout(30)
+        self.driver.set_script_timeout(30)
 
     # def parse(self, response):
     #     self.driver.get(response.url)
@@ -80,7 +73,7 @@ class RecordsLinksSpider(scrapy.Spider):
         elements_by_xpath = self.driver.find_elements_by_xpath
         element_by_xpath = self.driver.find_element_by_xpath
         by_id = self.driver.find_element_by_id
-
+        total = 0
         def next_page():
             next_pages = None
             try:
@@ -100,8 +93,10 @@ class RecordsLinksSpider(scrapy.Spider):
             return list(set([e.get_attribute('href')
                     for e in elements_by_xpath(".//a[@class='stdFontResults']")]))
 
-        def next_date():
-            self.driver.delete_all_cookies()
+        def next_date(total):
+            if total % 5 == 0:
+                self.driver.delete_all_cookies()
+                total = 0
             search_selector = element_by_xpath(".//table[@id='Table2']/tbody/tr[position() = last() - 1]//a")
             search_selector.click()
             submit = by_id('cmdSubmit')
@@ -113,15 +108,28 @@ class RecordsLinksSpider(scrapy.Spider):
         self.driver.get(response.url)
 
         for date in self.dates():
-            next_date()
+            print('Next date')
+            next_date(total)
+            print('Next date over')
+            total += 1
             yield {date.strftime(self.date_formatter): get_hrefs(), 'page' : 1}
+            print('get hrefs over')
             next = next_page()
+            print('next page over')
             while next:
                 page = next.text
-                next.click()
+                try:
+                    next.click()
+                except TimeoutException:
+                    self.driver.refresh()
+                    next = next_page()
+                    next.click()
+                print('next click over')
                 hrefs = get_hrefs()
+                print('get hrefs over')
                 yield {date.strftime(self.date_formatter): hrefs, 'page' : page }
                 next = next_page()
+                print('next page over')
 
         self.driver.close()
 
