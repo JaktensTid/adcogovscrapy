@@ -1,10 +1,10 @@
 import os
+import re
 import scrapy
+import logging
 from selenium import webdriver
 from datetime import datetime, timedelta
-import logging
 from selenium.webdriver.remote.remote_connection import LOGGER
-
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 class RecordsLinksSpider(scrapy.Spider):
@@ -116,8 +116,42 @@ class RecordsLinksSpider(scrapy.Spider):
         item['Reception No'] = item['recep'] + '-' + item['year']
         item['book'] = item['bookPage'].split('/')[0].strip()
         item['page'] = item['bookPage'].split('/')[1].strip()
+        if item['legal']:
+            item.update(self.get_sec_twp_rng(item['legal']))
 
         yield item
+
+    def ternaty(self, regexp, str, replace1, replace2):
+        value = re.findall(regexp, str)
+        value = '' if not value else value[0].replace(replace1, '')
+        if replace2:
+            return value.replace(replace2, '')
+        else:
+            return value
+
+    def get_sec_twp_rng(self, legal):
+        subdivision = ''
+        matches = re.findall(r'( [0-9]{1,2}(-| )[0-9]{1,2}(-| )[0-9]{1,2})|(^[0-9]{1,2}(-| )[0-9]{1,2}(-| )[0-9]{1,2})',
+                             legal)
+        if matches:
+            return matches[0].strip().split('-')
+
+        lower = legal.lower()
+        sec_reg = r'(sec [0-9]{1,2})|(sec:[0-9]{1,2})'
+        twp_reg = r'(tp [0-9]{1,2})|(tp:[0-9]{1,2})'
+        rng_reg = r'(rng [0-9]{1,2})|(rng:[0-9]{1,2})'
+        blk_reg = r'(blk[s]? [0-9]{1,2}&[0-9]{1,2})|(blk[s]? [0-9]{1,2}-[0-9]{1,2})|(blk[s]? [0-9]{1,2})'
+        lot_reg = r'(lot[s]? [0-9]{1,2}&[0-9]{1,2})|(lot[s]? [0-9]{1,2}-[0-9]{1,2})|(lot[s]? [0-9]{1,2})'
+        sec = self.ternaty(sec_reg, lower, 'sec ', 'sec1')
+        twp = self.ternaty(twp_reg, lower, 'tp ', 'tp:')
+        rng = self.ternaty(rng_reg, lower, 'rng ', 'rng:')
+        blk = self.ternaty(blk_reg, lower, 'blk ', '')
+        lot = self.ternaty(lot_reg, lower, 'lot ', 'lots ')
+        if lot and blk:
+            subdivision = self.ternaty('((' + blk_reg + ') .*)', lower, 'blk ' + blk + ' ', '')
+        elif lot:
+            subdivision = self.ternaty('((' + lot_reg + ') .*)', lower, 'lot ' + lot + ' ', 'lots ' + lot + ' ')
+        return {'sec' : sec, 'twp' : twp, 'rng' : rng, 'blk' : blk, 'lot' : lot, 'subdivision' : subdivision.upper()}
 
     def dates(self):
         date = self.end_date
