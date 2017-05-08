@@ -11,21 +11,7 @@ class MongodbPipeLine(object):
 
     def process_item(self, item, spider):
         if 'instrument' in item:
-            self.object_processor(item, spider)
-        else:
-            self.list_processor(item, spider)
-
-    def object_processor(self, item, spider):
-        if item:
-            self.collection.update_one({'link' : item['link']}, {'$set' : {'data' : item}})
-            log.msg('Record added to database', level=log.DEBUG, spider=spider)
-        return item
-
-    def list_processor(self, item, spider):
-        date = [key for key in item if key != 'page'][0]
-        objects = [{'link' : link.replace('showdetails', 'details'), 'date' : date, 'page' : item['page']} for link in item[date]]
-        print(' - - - - Got items' + date)
-        if objects:
-            self.collection.insert_many(objects)
-            log.msg('Record added to database', level=log.DEBUG, spider=spider)
-        return item
+            if item:
+                self.collection.insert_one(item)
+                log.msg('Record added to database', level=log.INFO, spider=spider)
+            return item
