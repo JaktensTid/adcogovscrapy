@@ -20,7 +20,7 @@ NEWSPIDER_MODULE = 'adamscountyscraper.spiders'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
-MONGODB_URI = 'localhost:38444'
+MONGODB_URI = '127.0.0.1:38444'
 MONGODB_DB = 'main'
 MONGODB_COLLECTION = 'adcogovrecords'
 

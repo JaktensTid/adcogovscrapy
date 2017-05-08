@@ -116,15 +116,18 @@ class RecordsLinksSpider(scrapy.Spider):
         item['Reception No'] = item['recep'] + '-' + item['year']
         item['book'] = item['bookPage'].split('/')[0].strip()
         item['page'] = item['bookPage'].split('/')[1].strip()
-        if item['legal']:
-            item.update(self.get_sec_twp_rng(item['legal']))
+        #if item['legal']:
+        #    item.update(self.get_sec_twp_rng(item['legal']))
+        # Will parse this later
 
         yield item
 
     def ternaty(self, regexp, str, replace1, replace2):
         value = re.findall(regexp, str)
+        if value:
+            value = [g for g in value[0] if g]
         value = '' if not value else value[0].replace(replace1, '')
-        if replace2:
+        if value and replace2:
             return value.replace(replace2, '')
         else:
             return value
