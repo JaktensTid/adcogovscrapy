@@ -10,7 +10,7 @@ class ItemsSpider(scrapy.Spider):
     collection = db[settings['MONGODB_COLLECTION']]
     items = collection.find({"data" : {"$exists" : False}})
     items.batch_size(1000)
-    start_urls = [item['link'].replace('showdetails', 'details') for item in items]
+    start_urls = [item['link'] for item in items]
 
     def parse(self, response):
         item = {}
@@ -35,7 +35,6 @@ class ItemsSpider(scrapy.Spider):
             else:
                 item[key] = ''
 
-        item['link'] = response.url
         item['recep'] = item['instrument'][:-7].lstrip('0')
         item['year'] = item['instrument'][:4]
         item['Reception No'] = item['recep'] + '-' + item['year']

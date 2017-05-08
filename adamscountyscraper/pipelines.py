@@ -17,13 +17,13 @@ class MongodbPipeLine(object):
 
     def object_processor(self, item, spider):
         if item:
-            self.collection.update_one({'link' : item['link']}, {'data' : item})
+            self.collection.update_one({'link' : item['link']}, {'$set' : {'data' : item}})
             log.msg('Record added to database', level=log.DEBUG, spider=spider)
         return item
 
     def list_processor(self, item, spider):
         date = [key for key in item if key != 'page'][0]
-        objects = [{'link' : link, 'date' : date, 'page' : item['page']} for link in item[date]]
+        objects = [{'link' : link.replace('showdetails', 'details'), 'date' : date, 'page' : item['page']} for link in item[date]]
         print(' - - - - Got items' + date)
         if objects:
             self.collection.insert_many(objects)
