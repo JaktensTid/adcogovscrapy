@@ -2,10 +2,14 @@ import os
 import re
 import scrapy
 import logging
+from scrapy import log, signals
+from scrapy.xlib.pydispatch import dispatcher
 from selenium import webdriver
 from datetime import datetime, timedelta
 from selenium.webdriver.remote.remote_connection import LOGGER
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
+
+count = 0
 
 class RecordsLinksSpider(scrapy.Spider):
     name = 'linksspider'
@@ -13,16 +17,20 @@ class RecordsLinksSpider(scrapy.Spider):
     start_date = datetime.strptime('01/01/1860', date_formatter)
     #end_date = datetime.strptime('03/01/1960', date_formatter)
     #end_date = datetime.today()
-    end_date = datetime.strptime('05/05/2017', date_formatter)
+    end_date = datetime.strptime('12/03/2014', date_formatter)
 
     start_urls = [
         'https://apps.adcogov.org/oncoreweb/Search.aspx']
 
     def __init__(self):
-        LOGGER.setLevel(logging.ERROR)
+        self.failed_urls = []
         self.driver = webdriver.PhantomJS(os.path.join(os.path.dirname(__file__), 'bin/phantomjs'))
         self.driver.set_page_load_timeout(30)
         self.driver.set_script_timeout(30)
+        dispatcher.connect(self.spider_closed, signals.spider_closed)
+
+    def spider_closed(self, spider):
+        self.crawler.stats.set_value('failed_urls', ','.join(spider.failed_urls))
 
     def parse(self, response):
         exception_message = '- - - - No Such Element Exception'
@@ -85,10 +93,15 @@ class RecordsLinksSpider(scrapy.Spider):
                                              callback=self.parse_item)
                     yield request
                 next = next_page()
+            #log.msg(str(date), level=log.ERROR, spider=self)
 
         self.driver.close()
 
     def parse_item(self, response):
+        if response.status == 404:
+            self.failed_urls.append(response.url)
+            return {}
+        #log.msg('Scraping ' + str(response.url), level=log.ERROR, spider=self)
         item = {}
         search_pattern = [('instrument', 'lblCfn'), ('docType', 'lblDocumentType'), ('modifyDate', 'lblModifyDate'),
                           ('recordDate', 'lblRecordDate'), ('acknowledgementDate', 'lblAcknowledgementDate'),
@@ -116,11 +129,11 @@ class RecordsLinksSpider(scrapy.Spider):
         item['Reception No'] = item['recep'] + '-' + item['year']
         item['book'] = item['bookPage'].split('/')[0].strip()
         item['page'] = item['bookPage'].split('/')[1].strip()
+        item['url'] = response.url
         #if item['legal']:
         #    item.update(self.get_sec_twp_rng(item['legal']))
         # Will parse this later
-
-        yield item
+        return item
 
     def ternaty(self, regexp, str, replace1, replace2):
         value = re.findall(regexp, str)

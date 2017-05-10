@@ -20,12 +20,12 @@ NEWSPIDER_MODULE = 'adamscountyscraper.spiders'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
-MONGODB_URI = '127.0.0.1:38444'
-MONGODB_DB = 'main'
+MONGODB_URI = 'mongodb://'
+MONGODB_DB = 'adcogov'
 MONGODB_COLLECTION = 'adcogovrecords'
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-#CONCURRENT_REQUESTS = 32
+CONCURRENT_REQUESTS = 8
 
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
@@ -70,6 +70,8 @@ MONGODB_COLLECTION = 'adcogovrecords'
 ITEM_PIPELINES = {
      'adamscountyscraper.pipelines.MongodbPipeLine' : 300
 }
+
+LOG_LEVEL = 'INFO'
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html

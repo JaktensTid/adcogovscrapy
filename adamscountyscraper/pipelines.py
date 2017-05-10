@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from pymongo.errors import DuplicateKeyError
 from scrapy.conf import settings
 from scrapy import log
 
@@ -10,8 +11,12 @@ class MongodbPipeLine(object):
         self.collection = db[settings['MONGODB_COLLECTION']]
 
     def process_item(self, item, spider):
+        global total
         if 'instrument' in item:
             if item:
-                self.collection.insert_one(item)
-                log.msg('Record added to database. Total: ' + str(total), level=log.INFO, spider=spider)
+                total += 1
+                try:
+                    self.collection.insert_one(item)
+                except DuplicateKeyError:
+                    print('Duplicate key')
             return item
