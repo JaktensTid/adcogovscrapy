@@ -8,6 +8,7 @@
 #     http://doc.scrapy.org/en/latest/topics/settings.html
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
+import os
 
 BOT_NAME = 'adamscountyscraper'
 
@@ -20,7 +21,7 @@ NEWSPIDER_MODULE = 'adamscountyscraper.spiders'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
-MONGODB_URI = 'mongodb://'
+MONGODB_URI = os.environ['MONGODB_URI']
 MONGODB_DB = 'adcogov'
 MONGODB_COLLECTION = 'adcogovrecords'
 

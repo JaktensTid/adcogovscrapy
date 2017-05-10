@@ -1,8 +1,9 @@
-
+import os
 from pymongo import MongoClient
 from datetime import datetime
 
-client = MongoClient('mongodb://')
+client = MongoClient(os.environ['MONGODB_URI'])
+
 db = client['adcogov']
 col = db['adcogovrecords']
 

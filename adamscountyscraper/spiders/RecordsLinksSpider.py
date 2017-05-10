@@ -17,7 +17,7 @@ class RecordsLinksSpider(scrapy.Spider):
     start_date = datetime.strptime('01/01/1860', date_formatter)
     #end_date = datetime.strptime('03/01/1960', date_formatter)
     #end_date = datetime.today()
-    end_date = datetime.strptime('12/03/2014', date_formatter)
+    end_date = datetime.strptime('07/18/2013', date_formatter)
 
     start_urls = [
         'https://apps.adcogov.org/oncoreweb/Search.aspx']
