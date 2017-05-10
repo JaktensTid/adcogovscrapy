@@ -24,6 +24,14 @@ class RecordsLinksSpider(scrapy.Spider):
 
     def __init__(self):
         self.failed_urls = []
+        from pymongo import MongoClient
+        client = MongoClient(os.environ['MONGODB_URI'])
+        db = client['adcogov']
+        col = db['adcogovrecords']
+        dates = [datetime.strptime(d['recordDate'], '%m/%d/%Y %I:%M:%S %p') for d in col.find({},{'recordDate' : 1})]
+        self.end_date = min(dates)
+        del dates
+        print('Scraping from ' + str(self.end_date))
         self.driver = webdriver.PhantomJS(os.path.join(os.path.dirname(__file__), 'bin/phantomjs'))
         self.driver.set_page_load_timeout(30)
         self.driver.set_script_timeout(30)
