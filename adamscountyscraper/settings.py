@@ -15,6 +15,9 @@ BOT_NAME = 'adamscountyscraper'
 SPIDER_MODULES = ['adamscountyscraper.spiders']
 NEWSPIDER_MODULE = 'adamscountyscraper.spiders'
 
+DEPTH_PRIORITY = 1 
+SCHEDULER_DISK_QUEUE = 'scrapy.squeue.PickleFifoDiskQueue'
+SCHEDULER_MEMORY_QUEUE = 'scrapy.squeue.FifoMemoryQueue'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'adamscountyscraper (+http://www.yourdomain.com)'
