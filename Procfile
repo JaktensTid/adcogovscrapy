@@ -1,1 +1,1 @@
-web: scrapy crawl linksspider
+
