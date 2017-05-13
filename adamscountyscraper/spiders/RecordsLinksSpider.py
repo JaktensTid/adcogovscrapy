@@ -62,7 +62,7 @@ class RecordsLinksSpider(scrapy.Spider):
             else: return next_pages
 
         def get_hrefs():
-            return list(set([e.get_attribute('href').replace('showdetails', 'details')
+            return list(set([e.get_attribute('href').replace('showdetails', 'details').replace('ShowDetails', 'details')
                     for e in elements_by_xpath(".//a[@class='stdFontResults']")]))
 
         def next_date(total):
