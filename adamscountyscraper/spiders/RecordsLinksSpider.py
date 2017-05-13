@@ -69,13 +69,17 @@ class RecordsLinksSpider(scrapy.Spider):
             if total % 5 == 0:
                 self.driver.delete_all_cookies()
                 total = 0
-            search_selector = element_by_xpath(".//table[@id='Table2']/tbody/tr[position() = last() - 1]//a")
-            search_selector.click()
-            submit = by_id('cmdSubmit')
-            date_input = by_id('txtRecordDate')
-            date_input.clear()
-            date_input.send_keys(date.strftime(self.date_formatter))
-            submit.click()
+            try:
+                search_selector = element_by_xpath(".//table[@id='Table2']/tbody/tr[position() = last() - 1]//a")
+                search_selector.click()
+                submit = by_id('cmdSubmit')
+                date_input = by_id('txtRecordDate')
+                date_input.clear()
+                date_input.send_keys(date.strftime(self.date_formatter))
+                submit.click()
+            except NoSuchElementException:
+                self.driver.get(self.start_urls[0])
+                next_date(total)
 
         self.driver.get(response.url)
 
@@ -141,7 +145,7 @@ class RecordsLinksSpider(scrapy.Spider):
         #if item['legal']:
         #    item.update(self.get_sec_twp_rng(item['legal']))
         # Will parse this later
-        return item
+        yield item
 
     def ternaty(self, regexp, str, replace1, replace2):
         value = re.findall(regexp, str)
