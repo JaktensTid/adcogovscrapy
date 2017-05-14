@@ -139,8 +139,12 @@ class RecordsLinksSpider(scrapy.Spider):
         item['recep'] = item['instrument'][:-7].lstrip('0')
         item['year'] = item['instrument'][:4]
         item['Reception No'] = item['recep'] + '-' + item['year']
-        item['book'] = item['bookPage'].split('/')[0].strip()
-        item['page'] = item['bookPage'].split('/')[1].strip()
+        if item['bookPage'].split('/') == 2:
+            item['book'] = item['bookPage'].split('/')[0].strip()
+            item['page'] = item['bookPage'].split('/')[1].strip()
+        else:
+            item['book'] = ''
+            item['page'] = ''
         item['url'] = response.url
         #if item['legal']:
         #    item.update(self.get_sec_twp_rng(item['legal']))
