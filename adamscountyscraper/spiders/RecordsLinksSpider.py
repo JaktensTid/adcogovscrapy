@@ -25,7 +25,7 @@ class RecordsLinksSpider(scrapy.Spider):
         from pymongo import MongoClient
         client = MongoClient(os.environ['MONGODB_URI'])
         db = client['adcogov']
-        col = db['adcogovrecords']
+        col = db['adcogovrecords-docsearch']
         dates = [datetime.strptime(d['recordDate'].split(' ')[0].strip(), '%m/%d/%Y') for d in
                  col.find({}, {'recordDate': 1})]
         if not self.dates:
@@ -47,6 +47,7 @@ class RecordsLinksSpider(scrapy.Spider):
         exception_message = '- - - - No Such Element Exception'
         elements_by_xpath = self.driver.find_elements_by_xpath
         element_by_xpath = self.driver.find_element_by_xpath
+        element_by_name = self.driver.find_element_by_name
         by_id = self.driver.find_element_by_id
         total = 0
         def next_page():
@@ -76,10 +77,15 @@ class RecordsLinksSpider(scrapy.Spider):
                 search_selector = element_by_xpath(".//table[@id='Table2']/tbody/tr[position() = last() - 3]//a")
                 search_selector.click()
                 submit = by_id('cmdSubmit')
-                date_input = by_id('txtRecordDate')
-                date_input.clear()
-                date_input.send_keys(date.strftime(self.date_formatter))
+                prev_date = date - relativedelta(days=1)
+                d1 = element_by_xpath(".//input[@name='txtBeginDate']")
+                d1.clear()
+                d2 = element_by_xpath(".//input[@name='txtEndDate']")
+                d2.clear()
+                d1.send_keys(prev_date.strftime(self.date_formatter))
+                d2.send_keys(date.strftime(self.date_formatter))
                 doc_selector = element_by_xpath(".//input[@name='txtDocTypes']")
+                doc_selector.clear()
                 doc_selector.send_keys('OG LS, LS')
                 submit.click()
             except NoSuchElementException:
