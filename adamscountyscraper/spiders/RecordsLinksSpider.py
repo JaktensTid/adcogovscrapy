@@ -38,6 +38,7 @@ class RecordsLinksSpider(scrapy.Spider):
         if not hasattr(self, 'end_date'):
             self.end_date = self.start_date + relativedelta(years=20 * id)
         del dates
+        if id == 0: self.end_date = self.end_date + relativedelta(years=20)
         print('Scraping from ' + str(self.end_date) + ' to ' + str(self.start_date))
         self.driver = webdriver.PhantomJS(os.path.join(os.path.dirname(__file__), 'bin/phantomjs'))
         self.driver.set_page_load_timeout(30)
