@@ -26,7 +26,7 @@ SCHEDULER_MEMORY_QUEUE = 'scrapy.squeue.FifoMemoryQueue'
 ROBOTSTXT_OBEY = True
 MONGODB_URI = os.environ['MONGODB_URI']
 MONGODB_DB = 'adcogov'
-MONGODB_COLLECTION = 'adcogovrecords'
+MONGODB_COLLECTION = 'adcogovrecords_doctype'
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 CONCURRENT_REQUESTS = 8
