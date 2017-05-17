@@ -6,6 +6,7 @@ from scrapy import log, signals
 from scrapy.xlib.pydispatch import dispatcher
 from selenium import webdriver
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 from selenium.webdriver.remote.remote_connection import LOGGER
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
@@ -14,22 +15,26 @@ count = 0
 class RecordsLinksSpider(scrapy.Spider):
     name = 'linksspider'
     date_formatter = "%m/%d/%Y"
-    start_date = datetime.strptime('01/01/1860', date_formatter)
-    #end_date = datetime.strptime('03/01/1960', date_formatter)
-    #end_date = datetime.today()
-    end_date = datetime.strptime('07/18/2013', date_formatter)
+    start_date = datetime.strptime('01/01/1980', date_formatter)
 
     start_urls = [
         'https://apps.adcogov.org/oncoreweb/Search.aspx']
 
-    def __init__(self):
+    def __init__(self, id=0):
         self.failed_urls = []
         from pymongo import MongoClient
         client = MongoClient(os.environ['MONGODB_URI'])
         db = client['adcogov']
         col = db['adcogovrecords']
         dates = [datetime.strptime(d['recordDate'].split(' ')[0].strip(), '%m/%d/%Y') for d in col.find({},{'recordDate' : 1})]
-        self.end_date = min(dates)
+        dates.sort()
+        self.start_date = self.start_date - relativedelta(years=20 * id)
+        for date in dates:
+            if date >= self.start_date:
+                self.end_date = date
+                break
+        if self.end_date >= self.start_date + relativedelta(years=20 * id):
+            self.close(reason='SCRAPED ALL MY DATES', spider=self)
         del dates
         print('Scraping from ' + str(self.end_date))
         self.driver = webdriver.PhantomJS(os.path.join(os.path.dirname(__file__), 'bin/phantomjs'))
