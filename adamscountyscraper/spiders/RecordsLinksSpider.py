@@ -20,8 +20,8 @@ class RecordsLinksSpider(scrapy.Spider):
     start_urls = [
         'https://apps.adcogov.org/oncoreweb/Search.aspx']
 
-    def __init__(self, id=0):
-        print('Id ' + str(self.id))
+    def __init__(self):
+        id = 0
         self.failed_urls = []
         from pymongo import MongoClient
         client = MongoClient(os.environ['MONGODB_URI'])
