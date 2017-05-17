@@ -33,7 +33,9 @@ class RecordsLinksSpider(scrapy.Spider):
             if date >= self.start_date:
                 self.end_date = date
                 break
-        if self.end_date >= self.start_date + relativedelta(years=20 * id):
+        if self.end_date == None:
+            self.end_date = self.start_date + relativedelta(years=20 * id)
+        if self.end_date <= self.start_date :
             self.close(reason='SCRAPED ALL MY DATES', spider=self)
         del dates
         print('Scraping from ' + str(self.end_date))
