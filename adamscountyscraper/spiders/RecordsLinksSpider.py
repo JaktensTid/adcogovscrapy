@@ -28,7 +28,7 @@ class RecordsLinksSpider(scrapy.Spider):
         col = db['adcogovrecords_docsearch']
         dates = [datetime.strptime(d['recordDate'].split(' ')[0].strip(), '%m/%d/%Y') for d in
                  col.find({}, {'recordDate': 1})]
-        if not self.dates:
+        if not dates:
             self.end_date = datetime.strptime('05/16/2017', date_formatter)
         else:
             self.end_date = min(dates)
