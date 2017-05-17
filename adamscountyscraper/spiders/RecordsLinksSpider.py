@@ -25,7 +25,7 @@ class RecordsLinksSpider(scrapy.Spider):
         from pymongo import MongoClient
         client = MongoClient(os.environ['MONGODB_URI'])
         db = client['adcogov']
-        col = db['adcogovrecords-docsearch']
+        col = db['adcogovrecords_docsearch']
         dates = [datetime.strptime(d['recordDate'].split(' ')[0].strip(), '%m/%d/%Y') for d in
                  col.find({}, {'recordDate': 1})]
         if not self.dates:
