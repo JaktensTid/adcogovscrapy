@@ -69,12 +69,14 @@ class RecordsLinksSpider(scrapy.Spider):
                 self.driver.delete_all_cookies()
                 total = 0
             try:
-                search_selector = element_by_xpath(".//table[@id='Table2']/tbody/tr[position() = last() - 1]//a")
+                search_selector = element_by_xpath(".//table[@id='Table2']/tbody/tr[position() = last() - 3]//a")
                 search_selector.click()
                 submit = by_id('cmdSubmit')
                 date_input = by_id('txtRecordDate')
                 date_input.clear()
                 date_input.send_keys(date.strftime(self.date_formatter))
+                doc_selector = element_by_xpath(".//input[@name='txtDocTypes']")
+                doc_selector.send_keys('OG LS, LS')
                 submit.click()
             except NoSuchElementException:
                 self.driver.get(self.start_urls[0])
