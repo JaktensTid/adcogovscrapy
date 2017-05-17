@@ -21,27 +21,16 @@ class RecordsLinksSpider(scrapy.Spider):
         'https://apps.adcogov.org/oncoreweb/Search.aspx']
 
     def __init__(self):
-        id = 2
-        print(str(id))
         self.failed_urls = []
         from pymongo import MongoClient
         client = MongoClient(os.environ['MONGODB_URI'])
         db = client['adcogov']
         col = db['adcogovrecords']
-        dates = [datetime.strptime(d['recordDate'].split(' ')[0].strip(), '%m/%d/%Y') for d in col.find({},{'recordDate' : 1})]
-        dates.sort()
-        self.start_date = self.start_date - relativedelta(years=20 * id)
-        for date in dates:
-            if date >= self.start_date and date <= self.start_date + relativedelta(years=20 * id):
-                self.end_date = date
-                break
-            if date > self.start_date + relativedelta(years=20 * id):
-                self.close(reason='SCRAPED ALL MY DATES', spider=self)
-        if not hasattr(self, 'end_date'):
-            self.end_date = self.start_date + relativedelta(years=20 * id)
+        dates = [datetime.strptime(d['recordDate'].split(' ')[0].strip(), '%m/%d/%Y') for d in
+                 col.find({}, {'recordDate': 1})]
+        self.end_date = min(dates)
         del dates
-        if id == 0: self.end_date = self.end_date + relativedelta(years=20)
-        print('Scraping from ' + str(self.end_date) + ' to ' + str(self.start_date))
+        print('Scraping from ' + str(self.end_date))
         self.driver = webdriver.PhantomJS(os.path.join(os.path.dirname(__file__), 'bin/phantomjs'))
         self.driver.set_page_load_timeout(30)
         self.driver.set_script_timeout(30)
