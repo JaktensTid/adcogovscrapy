@@ -29,6 +29,8 @@ class RecordsLinksSpider(scrapy.Spider):
         dates = [datetime.strptime(d['recordDate'].split(' ')[0].strip(), '%m/%d/%Y') for d in
                  col.find({}, {'recordDate': 1})]
         self.end_date = min(dates)
+        if self.end_date == None:
+            self.end_date = datetime.strptime('05/16/2017', date_formatter)
         del dates
         print('Scraping from ' + str(self.end_date))
         self.driver = webdriver.PhantomJS(os.path.join(os.path.dirname(__file__), 'bin/phantomjs'))
