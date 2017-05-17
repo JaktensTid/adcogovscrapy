@@ -30,15 +30,15 @@ class RecordsLinksSpider(scrapy.Spider):
         dates.sort()
         self.start_date = self.start_date - relativedelta(years=20 * id)
         for date in dates:
-            if date >= self.start_date:
+            if date >= self.start_date and date <= self.start_date + relativedelta(years=20 * id):
                 self.end_date = date
                 break
+            if date > self.start_date + relativedelta(years=20 * id):
+                self.close(reason='SCRAPED ALL MY DATES', spider=self)
         if self.end_date == None:
             self.end_date = self.start_date + relativedelta(years=20 * id)
-        if self.end_date <= self.start_date :
-            self.close(reason='SCRAPED ALL MY DATES', spider=self)
         del dates
-        print('Scraping from ' + str(self.end_date))
+        print('Scraping from ' + str(self.end_date) + ' to ' + str(self.start_date))
         self.driver = webdriver.PhantomJS(os.path.join(os.path.dirname(__file__), 'bin/phantomjs'))
         self.driver.set_page_load_timeout(30)
         self.driver.set_script_timeout(30)
