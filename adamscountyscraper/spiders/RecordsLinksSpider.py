@@ -15,7 +15,7 @@ count = 0
 class RecordsLinksSpider(scrapy.Spider):
     name = 'linksspider'
     date_formatter = "%m/%d/%Y"
-    start_date = datetime.strptime('01/01/1980', date_formatter)
+    start_date = datetime.strptime('01/01/1860', date_formatter)
 
     start_urls = [
         'https://apps.adcogov.org/oncoreweb/Search.aspx']
@@ -187,6 +187,6 @@ class RecordsLinksSpider(scrapy.Spider):
     def dates(self):
         date = self.end_date
         yield date
-        while date != self.start_date:
+        while date > self.start_date:
             date -= timedelta(days=1)
             yield date
