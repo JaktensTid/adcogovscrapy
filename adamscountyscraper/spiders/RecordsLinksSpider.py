@@ -4,6 +4,7 @@ import scrapy
 import logging
 from scrapy import log, signals
 from scrapy.xlib.pydispatch import dispatcher
+from scrapy.conf import settings
 from selenium import webdriver
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
@@ -23,9 +24,9 @@ class RecordsLinksSpider(scrapy.Spider):
     def __init__(self):
         self.failed_urls = []
         from pymongo import MongoClient
-        client = MongoClient(os.environ['MONGODB_URI'])
-        db = client['adcogov']
-        col = db['adcogovrecords']
+        client = MongoClient(settings['MONGODB_URI'])
+        db = client[settings['MONGODB_DB']]
+        col = db[settings['MONGODB_COLLECTION']]
         dates = [datetime.strptime(d['recordDate'].split(' ')[0].strip(), '%m/%d/%Y') for d in
                  col.find({}, {'recordDate': 1})]
         self.end_date = min(dates)
@@ -189,4 +190,5 @@ class RecordsLinksSpider(scrapy.Spider):
         yield date
         while date > self.start_date:
             date -= timedelta(days=1)
+            print('Yielding date: ' + str(date))
             yield date

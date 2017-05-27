@@ -24,6 +24,7 @@ SCHEDULER_MEMORY_QUEUE = 'scrapy.squeue.FifoMemoryQueue'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
+#MONGODB_URI = os.environ['MONGODB_URI']
 MONGODB_URI = os.environ['MONGODB_URI']
 MONGODB_DB = 'adcogov'
 MONGODB_COLLECTION = 'adcogovrecords'
