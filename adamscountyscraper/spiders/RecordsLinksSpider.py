@@ -13,10 +13,51 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 count = 0
 
+def ternaty(regexp, str, replace1, replace2):
+    value = re.findall(regexp, str)
+    if value:
+        value = [g for g in value[0] if g]
+    value = '' if not value else value[0].replace(replace1, '')
+    if value and replace2:
+        return value.replace(replace2, '')
+    else:
+        return value
+
+def get_sec_twp_rng(legal):
+    subdivision = ''
+    if type(legal) == list or type(legal) == tuple:
+        legal = ' '.join(legal)
+    matches = re.findall(r'(( |^)[0-9]{1,2} [0-9]{1,2} [0-9]{1,2})|(( |^)[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2})',
+                     legal)
+    if matches:
+        matches = [match.strip() for match in matches[0] if match.strip()]
+        m = matches[0]
+        if '-' in m:
+            m = m.split('-')
+        else:
+            m = m.split(' ')
+        return {'sec': m[0], 'twp': m[1], 'rng': m[2], 'blk': '', 'lot': '', 'subdivision': ''}
+
+    lower = legal.lower()
+    sec_reg = r'(sec [0-9]{1,2})|(sec:[0-9]{1,2})'
+    twp_reg = r'(tp [0-9]{1,2})|(tp:[0-9]{1,2})'
+    rng_reg = r'(rng [0-9]{1,2})|(rng:[0-9]{1,2})'
+    blk_reg = r'(blk[s]? [0-9]{1,2}&[0-9]{1,2})|(blk[s]? [0-9]{1,2}-[0-9]{1,2})|(blk[s]? [0-9]{1,2})'
+    lot_reg = r'(lot[s]? [0-9]{1,2}&[0-9]{1,2})|(lot[s]? [0-9]{1,2}-[0-9]{1,2})|(lot[s]? [0-9]{1,2})'
+    sec = ternaty(sec_reg, lower, 'sec ', 'sec1')
+    twp = ternaty(twp_reg, lower, 'tp ', 'tp:')
+    rng = ternaty(rng_reg, lower, 'rng ', 'rng:')
+    blk = ternaty(blk_reg, lower, 'blk ', '')
+    lot = ternaty(lot_reg, lower, 'lot ', 'lots ')
+    if lot and blk:
+        subdivision = ternaty('((' + blk_reg + ') .*)', lower, 'blk ' + blk + ' ', '')
+    elif lot:
+        subdivision = ternaty('((' + lot_reg + ') .*)', lower, 'lot ' + lot + ' ', 'lots ' + lot + ' ')
+    return {'sec': sec, 'twp': twp, 'rng': rng, 'blk': blk, 'lot': lot, 'subdivision': subdivision.upper()}
+
 class RecordsLinksSpider(scrapy.Spider):
     name = 'linksspider'
     date_formatter = "%m/%d/%Y"
-    start_date = datetime.strptime('01/01/1860', date_formatter)
 
     start_urls = [
         'https://apps.adcogov.org/oncoreweb/Search.aspx']
@@ -29,8 +70,8 @@ class RecordsLinksSpider(scrapy.Spider):
         col = db[settings['MONGODB_COLLECTION']]
         dates = [datetime.strptime(d['recordDate'].split(' ')[0].strip(), '%m/%d/%Y') for d in
                  col.find({}, {'recordDate': 1})]
-        self.end_date = min(dates)
-        del dates
+        self.end_date = datetime.today()
+        self.start_date = self.end_date - timedelta(days=7)
         print('Scraping from ' + str(self.end_date))
         self.driver = webdriver.PhantomJS(os.path.join(os.path.dirname(__file__), 'bin/phantomjs'))
         self.driver.set_page_load_timeout(30)
@@ -146,44 +187,11 @@ class RecordsLinksSpider(scrapy.Spider):
             item['book'] = ''
             item['page'] = ''
         item['url'] = response.url
-        #if item['legal']:
-        #    item.update(self.get_sec_twp_rng(item['legal']))
-        # Will parse this later
+        if item['legal']:
+            item.update(self.get_sec_twp_rng(item['legal']))
         yield item
 
-    def ternaty(self, regexp, str, replace1, replace2):
-        value = re.findall(regexp, str)
-        if value:
-            value = [g for g in value[0] if g]
-        value = '' if not value else value[0].replace(replace1, '')
-        if value and replace2:
-            return value.replace(replace2, '')
-        else:
-            return value
 
-    def get_sec_twp_rng(self, legal):
-        subdivision = ''
-        matches = re.findall(r'( [0-9]{1,2}(-| )[0-9]{1,2}(-| )[0-9]{1,2})|(^[0-9]{1,2}(-| )[0-9]{1,2}(-| )[0-9]{1,2})',
-                             legal)
-        if matches:
-            return matches[0].strip().split('-')
-
-        lower = legal.lower()
-        sec_reg = r'(sec [0-9]{1,2})|(sec:[0-9]{1,2})'
-        twp_reg = r'(tp [0-9]{1,2})|(tp:[0-9]{1,2})'
-        rng_reg = r'(rng [0-9]{1,2})|(rng:[0-9]{1,2})'
-        blk_reg = r'(blk[s]? [0-9]{1,2}&[0-9]{1,2})|(blk[s]? [0-9]{1,2}-[0-9]{1,2})|(blk[s]? [0-9]{1,2})'
-        lot_reg = r'(lot[s]? [0-9]{1,2}&[0-9]{1,2})|(lot[s]? [0-9]{1,2}-[0-9]{1,2})|(lot[s]? [0-9]{1,2})'
-        sec = self.ternaty(sec_reg, lower, 'sec ', 'sec1')
-        twp = self.ternaty(twp_reg, lower, 'tp ', 'tp:')
-        rng = self.ternaty(rng_reg, lower, 'rng ', 'rng:')
-        blk = self.ternaty(blk_reg, lower, 'blk ', '')
-        lot = self.ternaty(lot_reg, lower, 'lot ', 'lots ')
-        if lot and blk:
-            subdivision = self.ternaty('((' + blk_reg + ') .*)', lower, 'blk ' + blk + ' ', '')
-        elif lot:
-            subdivision = self.ternaty('((' + lot_reg + ') .*)', lower, 'lot ' + lot + ' ', 'lots ' + lot + ' ')
-        return {'sec' : sec, 'twp' : twp, 'rng' : rng, 'blk' : blk, 'lot' : lot, 'subdivision' : subdivision.upper()}
 
     def dates(self):
         date = self.end_date
