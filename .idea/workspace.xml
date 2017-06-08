@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="8cefb9e3-9f6f-43e9-b004-47e7786750e8" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/adamscountyscraper/ghostdriver.log" afterPath="$PROJECT_DIR$/adamscountyscraper/ghostdriver.log" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/adamscountyscraper/settings.py" afterPath="$PROJECT_DIR$/adamscountyscraper/settings.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/adamscountyscraper/spiders/RecordsLinksSpider.py" afterPath="$PROJECT_DIR$/adamscountyscraper/spiders/RecordsLinksSpider.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -33,32 +31,13 @@
       <file leaf-file-name="RecordsLinksSpider.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/adamscountyscraper/spiders/RecordsLinksSpider.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="755">
-              <caret line="192" column="48" lean-forward="false" selection-start-line="192" selection-start-column="48" selection-end-line="192" selection-end-column="48" />
+            <state relative-caret-position="296">
+              <caret line="73" column="0" lean-forward="true" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/adamscountyscraper/settings.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="24" column="23" lean-forward="true" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="23" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pipelines.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/adamscountyscraper/pipelines.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" column="8" lean-forward="false" selection-start-line="14" selection-start-column="8" selection-end-line="14" selection-end-column="8" />
-              <folding>
-                <element signature="e#0#31#0" expanded="true" />
+                <element signature="e#3079#5810#0" expanded="false" />
+                <element signature="e#5856#8016#0" expanded="false" />
+                <element signature="e#8047#8234#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -107,10 +86,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="64" />
-    <option name="y" value="-11" />
-    <option name="width" value="1857" />
-    <option name="height" value="987" />
+    <option name="x" value="65" />
+    <option name="y" value="-4" />
+    <option name="width" value="1855" />
+    <option name="height" value="979" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -127,6 +106,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -173,8 +154,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -461,7 +440,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="64" y="-11" width="1857" height="987" extended-state="6" />
+    <frame x="65" y="-4" width="1855" height="979" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14986522" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -496,17 +475,28 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="57" />
+      <option name="time" value="59" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/adamscountyscraper/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="24" column="23" lean-forward="true" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/adamscountyscraper/spiders/RecordsLinksSpider.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3230">
           <caret line="190" column="37" lean-forward="true" selection-start-line="190" selection-start-column="37" selection-end-line="190" selection-end-column="37" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#3079#5810#0" expanded="false" />
+            <element signature="e#5856#8016#0" expanded="false" />
+            <element signature="e#8047#8234#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -516,7 +506,7 @@
         <state relative-caret-position="187">
           <caret line="14" column="8" lean-forward="false" selection-start-line="14" selection-start-column="8" selection-end-line="14" selection-end-column="8" />
           <folding>
-            <element signature="e#0#31#0" expanded="true" />
+            <element signature="e#0#31#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -535,6 +525,9 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#3079#5810#0" expanded="false" />
+            <element signature="e#5856#8016#0" expanded="false" />
+            <element signature="e#8047#8234#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -553,6 +546,9 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#3079#5810#0" expanded="false" />
+            <element signature="e#5856#8016#0" expanded="false" />
+            <element signature="e#8047#8234#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -571,6 +567,9 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#3079#5810#0" expanded="false" />
+            <element signature="e#5856#8016#0" expanded="false" />
+            <element signature="e#8047#8234#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -589,6 +588,9 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#3079#5810#0" expanded="false" />
+            <element signature="e#5856#8016#0" expanded="false" />
+            <element signature="e#8047#8234#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -614,6 +616,9 @@
           <caret line="72" column="12" lean-forward="false" selection-start-line="72" selection-start-column="12" selection-end-line="72" selection-end-column="12" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#3079#5810#0" expanded="false" />
+            <element signature="e#5856#8016#0" expanded="false" />
+            <element signature="e#8047#8234#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -646,6 +651,9 @@
           <caret line="120" column="31" lean-forward="false" selection-start-line="120" selection-start-column="31" selection-end-line="120" selection-end-column="31" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#3079#5810#0" expanded="false" />
+            <element signature="e#5856#8016#0" expanded="false" />
+            <element signature="e#8047#8234#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -671,6 +679,9 @@
           <caret line="119" column="60" lean-forward="false" selection-start-line="119" selection-start-column="60" selection-end-line="119" selection-end-column="60" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#3079#5810#0" expanded="false" />
+            <element signature="e#5856#8016#0" expanded="false" />
+            <element signature="e#8047#8234#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -688,6 +699,9 @@
           <caret line="22" column="42" lean-forward="false" selection-start-line="22" selection-start-column="42" selection-end-line="22" selection-end-column="42" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#3079#5810#0" expanded="false" />
+            <element signature="e#5856#8016#0" expanded="false" />
+            <element signature="e#8047#8234#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -707,6 +721,9 @@
           <caret line="111" column="28" lean-forward="true" selection-start-line="111" selection-start-column="28" selection-end-line="111" selection-end-column="28" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#3079#5810#0" expanded="false" />
+            <element signature="e#5856#8016#0" expanded="false" />
+            <element signature="e#8047#8234#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -731,6 +748,9 @@
           <caret line="96" column="0" lean-forward="false" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#3079#5810#0" expanded="false" />
+            <element signature="e#5856#8016#0" expanded="false" />
+            <element signature="e#8047#8234#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -748,6 +768,9 @@
           <caret line="64" column="79" lean-forward="false" selection-start-line="64" selection-start-column="61" selection-end-line="64" selection-end-column="79" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#3079#5810#0" expanded="false" />
+            <element signature="e#5856#8016#0" expanded="false" />
+            <element signature="e#8047#8234#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -772,6 +795,9 @@
           <caret line="57" column="28" lean-forward="true" selection-start-line="57" selection-start-column="28" selection-end-line="57" selection-end-column="28" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#3079#5810#0" expanded="false" />
+            <element signature="e#5856#8016#0" expanded="false" />
+            <element signature="e#8047#8234#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -789,6 +815,9 @@
           <caret line="60" column="58" lean-forward="false" selection-start-line="60" selection-start-column="58" selection-end-line="60" selection-end-column="58" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#3079#5810#0" expanded="false" />
+            <element signature="e#5856#8016#0" expanded="false" />
+            <element signature="e#8047#8234#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -860,8 +889,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/adamscountyscraper/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="24" column="23" lean-forward="true" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="23" />
+        <state relative-caret-position="357">
+          <caret line="24" column="23" lean-forward="false" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="23" />
           <folding />
         </state>
       </provider>
@@ -871,17 +900,20 @@
         <state relative-caret-position="238">
           <caret line="14" column="8" lean-forward="false" selection-start-line="14" selection-start-column="8" selection-end-line="14" selection-end-column="8" />
           <folding>
-            <element signature="e#0#31#0" expanded="true" />
+            <element signature="e#0#31#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/adamscountyscraper/spiders/RecordsLinksSpider.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="755">
-          <caret line="192" column="48" lean-forward="false" selection-start-line="192" selection-start-column="48" selection-end-line="192" selection-end-column="48" />
+        <state relative-caret-position="296">
+          <caret line="73" column="0" lean-forward="true" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#3079#5810#0" expanded="false" />
+            <element signature="e#5856#8016#0" expanded="false" />
+            <element signature="e#8047#8234#0" expanded="false" />
           </folding>
         </state>
       </provider>
