@@ -20,3 +20,5 @@ class MongodbPipeLine(object):
                 except DuplicateKeyError:
                     print('Duplicate key')
             return item
+
+

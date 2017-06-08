@@ -13,6 +13,8 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 count = 0
 
+def close_webdriver(wd): wd.quit()
+
 def ternaty(regexp, str, replace1, replace2):
     value = re.findall(regexp, str)
     if value:
@@ -74,6 +76,7 @@ class RecordsLinksSpider(scrapy.Spider):
 
     def spider_closed(self, spider):
         self.crawler.stats.set_value('failed_urls', ','.join(spider.failed_urls))
+        close_webdriver(self.driver)
 
     def parse(self, response):
         exception_message = '- - - - No Such Element Exception'
@@ -192,41 +195,3 @@ class RecordsLinksSpider(scrapy.Spider):
             date -= timedelta(days=1)
             print('Yielding date: ' + str(date))
             yield date
-
-
-class PdfSpider(scrapy.Spider):
-    main_page_url = 'https://searchicris.co.weld.co.us/recorder/web/login.jsp'
-    wd = webdriver.PhantomJS(os.path.join(os.path.dirname(__file__), 'bin/phantomjs'))
-
-    def __init__(self):
-        import json
-        self.credentials = json
-
-    def __enter__(self):
-        self.main_page()
-        cookies = self.get_cookies()
-        self.cookies = {'JSESSIONID': cookies['JSESSIONID'], 'f5_cspm': cookies['f5_cspm'],
-                        'pageSize': '100', 'sortDir': 'asc', 'sortField': 'Document+Relevance'}
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self.wd.quit()
-
-    def get_docs_id_from_csv(self, path, column):
-        with open(path, 'r') as file:
-            reader = csv.DictReader(file)
-            return [row[column] for row in reader]
-
-    def get_cookies(self):
-        return {cookie['name']: cookie['value']
-                for cookie in self.wd.get_cookies()
-                if '_ga' not in cookie['name']}
-
-    def return_to_docsearch(self):
-        self.wd.get('https://searchicris.co.weld.co.us/recorder/eagleweb/docSearch.jsp')
-
-    def main_page(self):
-        self.wd.get(self.main_page_url)
-        self.wd.find_element_by_id('userId').send_keys(self.credentials['user'])  # login
-        self.wd.find_element_by_name('password').send_keys(self.credentials['password'])  # password
-        self.wd.find_elements_by_name('submit')[1].click()
