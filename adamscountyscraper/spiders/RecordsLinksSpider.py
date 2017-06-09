@@ -185,7 +185,7 @@ class RecordsLinksSpider(scrapy.Spider):
             item['page'] = ''
         item['url'] = response.url
         if item['legal']:
-            item.update(self.get_sec_twp_rng(item['legal']))
+            item.update(get_sec_twp_rng(item['legal']))
         yield item
 
     def dates(self):
